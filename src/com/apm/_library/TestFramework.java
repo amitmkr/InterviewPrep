@@ -31,7 +31,7 @@ public class TestFramework<Arg, Result extends Comparable<Result>> {
 
     @Override
     public String toString() {
-      return "Argument=" + argument + " Expected_Result=" + expectedResult;
+      return "Argument=[" + argument + "] Expected_Result=[" + expectedResult + "]";
     }
   }
 
@@ -55,7 +55,7 @@ public class TestFramework<Arg, Result extends Comparable<Result>> {
         System.out.println("TEST PASSED: " + testCase);
       }
       else {
-        System.out.println(">>>>>>>>>> TEST FAILED: " + testCase + " Actual_Result=" + actualResult);
+        System.out.println(">>>>>>>>>> TEST FAILED: " + testCase + " Actual_Result=[" + actualResult + "]");
       }
     }
     System.out.println("--- DONE ---");
