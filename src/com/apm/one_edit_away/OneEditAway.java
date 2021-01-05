@@ -2,8 +2,6 @@ package com.apm.one_edit_away;
 
 import com.apm._library.TestFramework;
 
-import java.util.function.Function;
-
 /*
 There are three types of edits that can be performed on strings: insert a character,
 remove a character, or replace a character. Given two strings, write a function to check if they are
@@ -33,7 +31,80 @@ public class OneEditAway {
     }
   }
 
-  static boolean isOneEditAway(FuncArgs args) {
+  static boolean isOneEditAway_v2(FuncArgs args) {
+    String str1 = args.str1;
+    String str2 = args.str2;
+
+    int lenStr1 = str1.length();
+    int lenStr2 = str2.length();
+
+    if (Math.abs(lenStr1 - lenStr2) > 1) {
+      System.out.println("FALSE - Length is Off by more than 1");
+      return false;
+    }
+
+    if (lenStr1 == lenStr2) {
+      return checkForSingleReplace(str1, str2);
+    }
+    else {
+      return checkForSingleEdit(str1, str2);
+    }
+  }
+
+  static boolean checkForSingleReplace(String str1, String str2) {
+    boolean oneOperationDone = false;
+    for (int pos=0; pos<str1.length(); pos++) {
+      if (str1.charAt(pos) != str2.charAt(pos)) {
+        if (oneOperationDone)
+          return false;
+        else
+          oneOperationDone = true;
+      }
+    }
+
+    return true;
+  }
+
+  static boolean checkForSingleEdit(String str1, String str2) {
+
+    String smallerStr, largerStr;
+
+    if (str1.length() > str2.length()) {
+      largerStr = str1;
+      smallerStr = str2;
+    }
+    else {
+      largerStr = str2;
+      smallerStr = str1;
+    }
+
+    int lenSmallerStr = smallerStr.length();
+    int lenLargerStr = largerStr.length();
+
+    int posLargerStr = 0, posSmallerStr = 0;
+
+    boolean oneOperationDone = false;
+
+    while (posLargerStr < lenLargerStr && posSmallerStr < lenSmallerStr) {
+      if (largerStr.charAt(posLargerStr) == smallerStr.charAt(posSmallerStr)) {
+        ++posLargerStr;
+        ++posSmallerStr;
+      }
+      else {
+        if (oneOperationDone)
+          return false;
+        else {
+          oneOperationDone = true;
+          ++posLargerStr;
+          posSmallerStr += 2;
+        }
+      }
+    }
+
+    return true;
+  }
+
+  static boolean isOneEditAway_v1(FuncArgs args) {
     String str1 = args.str1;
     String str2 = args.str2;
 
@@ -123,6 +194,8 @@ public class OneEditAway {
         .withTestCase(new FuncArgs("pale", "bake"), false)
         .build();
 
-    testFramework.runTests(OneEditAway::isOneEditAway);
+    testFramework.runTests(OneEditAway::isOneEditAway_v1);
+
+    testFramework.runTests(OneEditAway::isOneEditAway_v2);
   }
 }
